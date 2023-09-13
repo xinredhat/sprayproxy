@@ -1,0 +1,22 @@
+---
+name: codecov
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Test codecov
+    steps:
+    - uses: actions/checkout@v1
+    - name: unite test
+      run: |
+        #!/usr/bin/env bash
+        go test ./... -race -coverprofile=coverage.out -covermode=atomic
+    - name: Upload coverage reports to Codecov
+      run: |
+        # Replace `linux` below with the appropriate OS
+        # Options are `alpine`, `linux`, `macos`, `windows`
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN}
